@@ -38,11 +38,19 @@ sleep 10
 echo -e "${YELLOW}Checking stream status...${NC}"
 
 # Start data recording for 10 minutes (600 seconds)
-echo -e "${GREEN}Starting data recording for 10 minutes...${NC}"
+echo -e "${GREEN}Starting data recording for 3 minutes...${NC}"
 cd "$SCRIPT_DIR"
 
-# Run the recording script with timeout
-timeout 600 $PYTHON src/record_lsl_csv.py
+# Run the recording script with timeout (using built-in bash timeout alternative)
+# Record for 5 minutes (300 seconds) - using background process with sleep
+$PYTHON src/record_lsl_csv.py &
+RECORD_PID=$!
+
+# Wait for 5 minutes
+sleep 180
+
+# Kill the recording process
+kill $RECORD_PID 2>/dev/null
 
 # Recording finished
 echo -e "${GREEN}Data recording completed!${NC}"
@@ -61,4 +69,4 @@ pkill -f "prompt_server.py" 2>/dev/null
 pkill -f "prompt_client.py" 2>/dev/null
 
 echo -e "${GREEN}Experiment completed successfully!${NC}"
-echo -e "${YELLOW}Data saved to: $(python -c "from src.record_lsl_csv import SESSION_DIR; print(SESSION_DIR)")${NC}"
+echo -e "${YELLOW}Data saved to: $($PYTHON -c "from src.record_lsl_csv import SESSION_DIR; print(SESSION_DIR)")${NC}"

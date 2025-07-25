@@ -10,10 +10,10 @@ import threading
 
 from iir import IIR
 
-BOARD_ID = BoardIds.SYNTHETIC_BOARD  # Default to synthetic board for testing
+BOARD_ID = BoardIds.CYTON_BOARD  # Default to Cyton board for testing
 
 class BrainFlowServer(threading.Thread):
-    def __init__(self, fps:int=None, board_id:BoardIds=BoardIds.SYNTHETIC_BOARD, is_emg:bool=False, 
+    def __init__(self, fps:int=None, board_id:BoardIds=BoardIds.CYTON_BOARD, is_emg:bool=False, 
                  serial_port:str='', lsl_raw:bool=True, lsl_filtered:bool=True,
                  include_channels:list[int]=None):
         super().__init__()  # initialize the Thread
